@@ -1,0 +1,27 @@
+%%% cestina
+\chyph
+\input cpalatin
+
+%%% vychozi hodnoty textu
+\def\Title{Presentation title}
+\def\Author{Author's name}
+\def\EMail{author@example.com}
+\def\Document{document type}
+\def\Organisation{organisation}
+
+%%% velikost papiru
+\immediate\message{resizing to 8in x 6.5in}
+\special{papersize=10in,7.5in}
+\hsize= 8 in
+\vsize= 6.5 in
+{\catcode64=11                          % \catcode`\@=11
+\gdef\m@g{\mag\count@
+  \hsize=8truein \vsize=6.5truein \dimen\footins8truein}
+}
+
+%%% zvetseni vystupu * (1.2)^3
+%%% tim se zvetsi vsechny objekty, vcetne grafiky - point potom neni 1/72 palce, ale (1.2)^3 krat vic!
+
+\magnification\magstep 3
+
+

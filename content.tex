@@ -1,0 +1,237 @@
+%%% obsah prezentace - soubor, ktery nese informace. O formu se postara styl,
+%%% ktery bude aplikovan vlozenim prislusneho souboru se stylem. Jineho stylu
+%%% pujde snadno dosahnout vymenou souboru, ktery je vlozen
+
+%%% styl prezentace
+\input themes/cross
+%\input themes/cross-bw
+%\input themes/vim
+%\input themes/vim-bw
+
+%%% informace o dokumentu
+\def\Title{Prezentace napsaná v~\TeX{}u}
+\def\Author{Filip ©imek}
+\def\EMail{simekf1@fel.cvut.cz}
+\def\Document{Semestrální práce z~nìjakého pøedmìtu}
+\def\Organisation{ÈVUT FEL}
+
+%%% titulni strana
+\titlepage{}
+
+%%% jednotlive slajdy
+\slide{Osnova}
+  \bullet{Cíl projektu}
+  \inactbul{Návod k~pou¾ití}
+  \inactbul{Pár testovacích slajdù}
+    \inactbbul{Zkou¹ka rùzných typù písma a~zvýraznìní}
+    \inactbbul{Zkou¹ka primitivních animací}
+    \inactbbul{Zkou¹ka vkládání obrázkù}
+    \inactbbul{Singularity}
+\endslide
+
+\slide{Cíl projektu}
+  \bullet{Vytvoøit sadu maker pro tvorbu prezentací v~\TeX{}u}
+  \bullet{Získat dobøe vypadající výstup}
+  \bullet{Oddìlit obsah a~styl; styl se musí dát snadno zmìnit}
+  \bullet{Mít mo¾nost prezentaci psát a~ne klikat v~OO.o}
+  \bullet{To v¹e v~èeském plain\TeX{}u}
+\endslide
+
+\slide{Osnova}
+  \inactbul{Cíl projektu}
+  \bullet{Návod k~pou¾ití}
+  \inactbul{Pár testovacích slajdù}
+    \inactbbul{Zkou¹ka rùzných typù písma a~zvýraznìní}
+    \inactbbul{Zkou¹ka primitivních animací}
+    \inactbbul{Zkou¹ka vkládání obrázkù}
+    \inactbbul{Singularity}
+\endslide
+
+\slide{Návod k pou¾ití - deklarace}
+  \bullet{Na zaèátek dokumentu vlo¾it vybraný styl}
+  \code{\string\input~themes/cross}
+  \bullet{Definovat hlavièkové informace}
+  \code{\string\def\string\Title\string{Název prezentace\string}}
+  \code{\string\def\string\Author\string{Jméno Autora\string}}
+  \code{\string\def\string\EMail\string{autoruv@email\string}}
+  \code{\string\def\string\Document\string{Typ dokumentu\string}}
+  \code{\string\def\string\Organisation\string{Organizace\string}}
+  \bullet{Sestavit titulní stranu}
+  \code{\string\titlepage}
+\endslide
+
+\slide{Návod k~pou¾ití - slajd I.}
+  \bullet{Následují definice slajdù}
+  \bullet{Slajd je ohranièen makry {\tt\hilite{\string\slide}}
+  a~{\tt\hilite{\string\endslide}}}
+  \code{\string\slide\string{Nadpis slajdu\string}}
+  \code{~~\% obsah slajdu}
+  \code{~~\% ...}
+  \code{\string\endslide}
+  \bullet{Odrá¾ky resp. pododrá¾ky se vkládají pøes makra
+  {\tt\hilite{\string\bullet}} resp. {\tt\hilite{\string\bbullet}}}
+  \code{\string\bullet\string{První úroveò\string}}
+  \code{~~\string\bbullet\string{Druhá úroveò\string}}
+\endslide
+
+\slide{Návod k~pou¾ití - slajd II.}
+  \bullet{Odrá¾ky a~pododrá¾ky mohou být také neaktivní (aplikuje se na nì
+  jiný styl), obyèejnì jsou pak ménì výrazné}
+  \bullet{Neaktivní odrá¾ky je mo¾né definovat makry {\tt\hilite{\string
+  \inactbul}} resp. {\tt\hilite{\string\inactbbul}}}
+  \code{\string\inactbul\string{První úroveò\string}}
+  \code{~~\string\inactbbul\string{Druhá úroveò\string}}
+  \bullet{Pro zvýrazòování èástí textu jsou definovány dva rùzné styly:
+  {\tt\hilite{\string\hilite}} a~{\tt\hhilite{\string\hhilite}}}
+  \code{\string\bullet\string{\string\hilite\string{Zvýraznìný\string} text\string}}
+  \code{\string\bullet\string{\string\hhilite\string{Zvýraznìný\string} text\string}}
+\endslide
+
+\slide{Návod k~pou¾ití - obrázky I.}
+  \bullet{Obrázky lze vkládat po levé i~po pravé stranì, také mezi
+  øádky odrá¾ek. Tyto varianty lze i~v~rámci jednoho slajdu kombinovat.}
+  \bullet{Ka¾dý obrázek se zadá pomocí makra {\tt\hilite{\string\image}},
+  první parametr je cesta k~souboru obrázku ({\tt.eps}, lze zadat bez
+  pøípony), druhý ¹íøka v~jednotkách známých \TeX{}u}
+  \code{\string\image\string{images/test.eps\string}\string{1in\string}}
+  \bullet{Obrázky mezi øádky se obalují makrem {\tt\hilite{\string
+  \horizimages}}. To\-hle makro mù¾e obsahovat jeden èi více obrázkù,
+  které budou vysázeny vedle sebe. Horizontální rozvr¾ení si urèí
+  u¾ivatel sám pou¾itím {\tt\string\hfil}.}
+  \code{\string\horizimages\string{\string\hfil\string\image\string
+  {images/test.eps\string}\string{1in\string}\string\hfil\string}}
+  \code{~~\% obrázek je vycentrován}
+\endslide
+
+\slide{Návod k~pou¾ití - obrázky II.}
+  \bullet{Obrázky po levé, resp. po pravé stranì se obklopují makry
+  {\tt\hilite{\string\vertimagesleft}} resp. {\tt\hilite{\string
+  \vertimagesright}}. Obì tato makra po¾adují druhý parametr, kterým
+  je ¹íøka jejich vertikálního boxu. Rozvr¾ení opìt øídí u¾ivatel.}
+  \code{\string\vertimagesleft\string{\string\image\string
+  {images/test.eps\string}\string{1in\string}\string\vfil\string}}
+  \code{~~\% obrázek je vlevo nahoøe}
+  \bullet{Vertikální obrázky musí být definovány \hhilite{jako první}
+  z~celého slajdu (døív ne¾ odrá¾ky a~horizontální obrázky) a~po jejich
+  definici \hhilite{musí následovat} makro {\tt\hilite{\string
+  \vertimagesend}} døíve, ne¾ první odrá¾ka nebo horizontální
+  obrázek.}
+\endslide
+
+\slide{Návod k~pou¾ití - ostatní}
+  \bullet{Makro {\tt\hilite{\string\keepslidenr}} zaøídí, ¾e pøí¹tí
+  slajd bude mít stejné èíslo jako pøedchozí}
+  \code{\string\slide\string{Slajd èíslo 4\string}}
+  \code{\string\endslide}
+  \code{\string\keepslidenr}
+  \code{\string\slide\string{Slajd má opìt èíslo 4\string}}
+  \bullet{Do slajdù lze vkládat jednoøádkové kousky kódu sázené
+  písmem s~pevnou ¹íøkou. K~tomu slou¾í makro {\tt\hilite{\string\code}}.}
+  \code{\string\code\string{printf("Hello World\string\n");\string}}
+  \bullet{Proto¾e je na dokument aplikováno trojnásobné zvìt¹ení, je
+  skuteèná hodnota v¹ech zadávaných rozmìrù (obrázkù, boxù, apod.)
+  $1,2^3$krát vìt¹í}
+\endslide
+
+\slide{Osnova}
+  \inactbul{Cíl projektu}
+  \inactbul{Návod k~pou¾ití}
+  \bullet{Pár testovacích slajdù}
+    \bbullet{Zkou¹ka rùzných typù písma a~zvýraznìní}
+    \bbullet{Zkou¹ka primitivních animací}
+    \bbullet{Zkou¹ka vkládání obrázkù}
+    \bbullet{Singularity}
+\endslide
+
+\slide{Zkou¹ka písma, zvýraznìní a zalomení}
+  \bullet{Odrá¾ka její¾ text se sna¾ím natáhnout, aby muselo nut\-nì a~nevyhnutelnì
+  dojít k~zalomení}
+  \bullet{Dal¹í odrá¾ka}
+    \bbullet{Text \hilite{zvýraznìný} prvým zpùsobem}
+    \bbullet{Text \hhilite{zvýraznìný} druhým zpùsobem. Øádek bude
+    trochu del¹í, aby se musel zalomit na stránce aspoò na dva krat¹í
+    øádky.}
+  \bullet{Ukázka kódu}
+    \code{SELECT * FROM tabulka t WHERE t.jmeno='Josef'}
+\endslide
+
+\slide{Zkou¹ka primitivních animací}
+  \bullet{První odrá¾ka}
+  \inactbul{Druhá odrá¾ka}
+    \inactbbul{Pododrá¾ka druhé odrá¾ky}
+  \inactbul{Tøetí odrá¾ka}
+\endslide
+
+\keepslidenr
+\slide{Zkou¹ka primitivních animací}
+  \inactbul{První odrá¾ka}
+  \bullet{Druhá odrá¾ka}
+    \bbullet{Pododrá¾ka druhé odrá¾ky}
+  \inactbul{Tøetí odrá¾ka}
+\endslide
+
+\keepslidenr
+\slide{Zkou¹ka primitivních animací}
+  \inactbul{První odrá¾ka}
+  \inactbul{Druhá odrá¾ka}
+    \inactbbul{Pododrá¾ka druhé odrá¾ky}
+  \bullet{Tøetí odrá¾ka}
+\endslide
+
+\slide{Zkou¹ka vkládání obrázku}
+  \bullet{Poznámka k obrázku}
+  \bullet{Druhá poznámka k obrázku}
+  \horizimages{\hfil\image{images/test.eps}{1in}\hfil\image{images/test.eps}{1in}\hfil}
+  \bullet{Tøetí poznámka k obrázku}
+\endslide
+
+\slide{Slajd s obrázkem nahoøe}
+  \horizimages{\image{images/test.eps}{1in}\hfil\image{images/test.eps}{1in}}
+  \bullet{Poznámka k obrázku}
+  \bullet{Druhá poznámka k obrázku}
+  \bullet{Tøetí poznámka k obrázku}
+\endslide
+
+\slide{Slajd s obrázkem vlevo}
+  \vertimagesleft{\image{images/test.eps}{1in}\vfil\image{images/test.eps}{1in}}{1.2in}
+  \vertimagesend
+  \bullet{Opìt nìjaký del¹í øádek, který se bude mu\-set zalomit, proto¾e èást
+  ¹íøky strán\-ky zabíra vlevo vertikální obrázkový box}
+  \bullet{Poznámka k obrázku}
+  \bullet{Druhá poznámka k obrázku}
+  \bullet{Tøetí poznámka k obrázku}
+\endslide
+
+\slide{Slajd s obrázkem vpravo}
+  \vertimagesright{\hfil\image{images/test.eps}{1in}\hfil}{1.05in}
+  \vertimagesend
+  \bullet{Poznámka k obrázku}
+  \bullet{Druhá poznámka k obrázku}
+  \bullet{Tøetí poznámka k obrázku}
+\endslide
+
+\slide{Slajd s obrázky v¹ude}
+  \vertimagesleft{\image{images/test.eps}{1in}\vfil\image{images/test.eps}{1in}}{1.1in}
+  \vertimagesright{\image{images/test.eps}{1in}}{1.05in}
+  \vertimagesend
+  \bullet{Poznámka k obrázku}
+  \horizimages{\hfil\image{images/test.eps}{0.8in}\hfil}
+  \bullet{Druhá poznámka k obráz\-ku}
+  \bullet{Tøetí poznámka k obráz\-ku}
+\endslide
+
+\slide{Slajd jen s obrázkem}
+  \vertimagesright{\image{images/test.eps}{1in}}{1.05in}
+  \vertimagesend
+\endslide
+
+\slide{Slajd jen s pododrá¾kou}
+  \bbullet{Pododrá¾ka}
+\endslide
+
+\slide{Prázdný slajd}
+\endslide
+
+%%% hotovo
+\bye
+

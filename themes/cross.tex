@@ -1,0 +1,205 @@
+%%% styl dokumentu - definuje, jak bude vypadat kazdy slajd po formalni
+%%% strance a take jak budou vypadat jednotlive prvky
+
+%%% makra pro praci s PostScriptem a PDF
+\input pspdf
+
+%%% definice spolecne pro vsechny styly
+\input themes/common
+
+%%% deklarace fontu
+\font\titlefont=csssdc10 scaled\magstep4
+\font\middlefont=csss9 scaled\magstep1
+\font\textfont=csss9 scaled\magstep2
+\font\bbulletfont=csss9 scaled\magstep1
+\font\authorfont=csss9 scaled\magstep2
+\font\headerfont=csss9
+\font\codefont=cstt10
+
+\textfont
+
+%%% barvy
+\def\hilitecolor{0.05 0.18 0.65}
+\def\hhilitecolor{0.18 0.62 0.02}
+\def\textcolor{0 0 0}
+\def\pagenocolor{0 0 0}
+\def\inactcolor{0.6 0.6 0.6}
+\def\codecolor{0.35 0.35 0.35}
+
+%%% indexy boxu s obrazky a textem
+\newbox\imgboxright \newbox\imgboxleft \newbox\textbox \newbox\bulletbox
+\newdimen\textboxwidth \newdimen\tmpwidth \newbox\tmpbox
+\newdimen\maxboxsize \newdimen\tmpheight \newcount\oldpageno
+
+% obrazek (soubor, velikost)
+\def\image#1#2{\epsfxsize=#2\epsfbox{#1}}
+
+% zvyraznene slovo
+\def\hilite#1{\special{color rgb \hilitecolor}#1\special{color rgb \textcolor}}
+
+% zvyraznene slovo jinou barvou
+\def\hhilite#1{\special{color rgb \hhilitecolor}#1\special{color rgb \textcolor}}
+
+% odrazka
+\def\bullet#1{\ifx\firstbullet1\gdef\firstbullet{0}\else\vskip9pt\fi
+\tmpwidth=\textboxwidth\advance\tmpwidth by-0.25in
+% sestavit vbox z textu odrazky (muze byt pres vic radku)
+\setbox\bulletbox=\vbox{\hsize=\tmpwidth{#1}}
+% vyrobit z odrazky horizontalni box, samotny znak odrazky je ve vboxu,
+% ktery ma velikost stejnou jako vbox textu (\ht0), aby se odrazka sazela
+% pred prvni radek textu
+\hbox{\hskip -12pt \vbox to\ht\bulletbox{\hsize=4mm\image{themes/cross_bul.eps}{3.2mm}\vfil}\box\bulletbox}}
+% odrazka druhe urovne
+\def\bbullet#1{\ifx\firstbullet1\gdef\firstbullet{0}\else\vskip4pt\fi
+\tmpwidth=\textboxwidth\advance\tmpwidth by-0.75in
+% ( 8in - 20pt ) / (1.2)^3 = 4.3in  ... 20pt ~ 0.5in; minus '*', hskip -> 4.15in
+\setbox\bulletbox=\vbox{\hsize=\tmpwidth\bbulletfont{#1}}
+\hbox{\hskip 24pt \vbox to\ht\bulletbox{\hsize=3mm\image{themes/cross_bbul.eps}{3mm}\vfil}\box\bulletbox}}
+
+% neaktivni odrazky
+% odrazka
+\def\inactbul#1{\ifx\firstbullet1\gdef\firstbullet{0}\else\vskip9pt\fi
+\tmpwidth=\textboxwidth\advance\tmpwidth by-0.25in
+% sestavit vbox z textu odrazky (muze byt pres vic radku)
+\setbox\bulletbox=\vbox{\hsize=\tmpwidth{\special{color rgb \inactcolor}#1\special{color rgb \textcolor}}}
+% vyrobit z odrazky horizontalni box, samotny znak odrazky je ve vboxu,
+% ktery ma velikost stejnou jako vbox textu (\ht0), aby se odrazka sazela
+% pred prvni radek textu
+\hbox{\hskip -12pt \vbox to\ht\bulletbox{\hsize=4mm\image{themes/cross_bul.eps}{3.2mm}\hfil\vfil}\box\bulletbox}}
+% odrazka druhe urovne
+\def\inactbbul#1{\ifx\firstbullet1\gdef\firstbullet{0}\else\vskip4pt\fi
+\tmpwidth=\textboxwidth\advance\tmpwidth by-0.75in
+% ( 8in - 20pt ) / (1.2)^3 = 4.3in  ... 20pt ~ 0.5in; minus '*', hskip -> 4.15in
+\setbox\bulletbox=\vbox{\hsize=\tmpwidth\bbulletfont{\special{color rgb \inactcolor}#1\special{color rgb \textcolor}}}
+\hbox{\hskip 24pt \vbox to\ht\bulletbox{\hsize=3mm\image{themes/cross_bbul.eps}{3mm}\hfil\vfil}\box\bulletbox}}
+
+% kus kodu
+\def\code#1{\ifx\firstbullet1\gdef\firstbullet{0}\else\vskip3pt\fi\hbox
+{\codefont\special{color rgb \codecolor}#1\special{color rgb \textcolor}}}
+
+% titulni stranka
+\def\titlepage{
+%%: offset .. posunuti vzhledem k aktualni pozici, 72bodu na palec
+%%: llx lly urx ury .. lower-left, upper-right ... souradnice borderu .eps (lze precist z hlavicky)
+%%: rhi rwi .. pozadovany rozmer obrazku, 720bodu na palec
+%% hscale, vscale .. zmena meritka na procenta
+%% angle, clip .. otoceni, povoleni orezani podle bounding boxu
+%% hsize vsize .. orezavaci sirka, vyska
+
+% pozadi titulni stranky
+% kvuli magstep3 vychazi palec na 42 bodu misto 72
+\special{psfile=themes/cross_title.eps hoffset=-42 voffset=-272 llx=0 lly=0 urx=900 ury=675 clip rhi=3150 rwi=4200}
+
+\bgroup\nopagenumbers\pageno=0
+
+\middlefont
+~\vskip 0.65in
+\special{color rgb \hilitecolor}
+\centerline{\titlefont\Title}
+\special{color rgb \textcolor}
+\vskip 0.37in
+\hbox to\hsize{\hfil\the\day.\the\month. \the\year\hskip0.48in}
+\vskip 0.30in{\headerfont
+\centerline{\Document}
+\centerline{\Organisation}}
+\vskip 0.34in
+\special{color rgb \hilitecolor}
+\hbox{\hskip0.6in\authorfont\Author\hfil}
+\special{color rgb \textcolor}
+\hbox{\hskip0.6in$<$\EMail$>$\hfil}
+
+% konec stranky
+\vfil
+\penalty-10000
+\egroup
+
+% nastaveni dalsich stranek
+% cisluj od 1
+\pageno=1
+% odstran footline
+}
+
+% zachovat cislo slajdu - tudiz nasledujici slajd bude mit stejne cislo jako
+% predchozi
+\def\keepslidenr{\pageno=\oldpageno}
+
+% novy slajd (nadpis)
+\def\slide#1{
+% pozadi slajdu
+\special{psfile=themes/cross.eps hoffset=-42 voffset=-272 llx=0 lly=0 urx=900 ury=675 clip rhi=3150 rwi=4200}
+\oldpageno=\pageno
+\bgroup
+% nadpis slajdu
+\vbox to0pt{\vskip-21pt\hskip-22pt\titlefont\hilite{#1}\vfil}
+% navrat na zacatek strany, kde zacne vlastni obsah
+\textfont\parindent=0pt\vskip9pt
+% implicitni sirka textoveho boxu, pokud na slajdu nebudou vertikalni
+% obrazkove boxy
+\textboxwidth=4.6in
+\gdef\firstbullet{1}
+% text slajdu se bude ukladat do docasneho vboxu, ze ktereho se potom
+% nasype do vysledneho vboxu pri sestavovani slajdu
+% na konci slajdu se z nich sestavi vbox patricne sirky (pote co
+% se vezmou do uvahy vertikalni boxy s obrazky)
+\setbox\tmpbox=\vbox\bgroup}
+
+% obrazky vlozene vedle sebe
+\def\horizimages#1{\ifx\firstbullet1\gdef\firstbullet{0}\else\vskip9pt\fi\hbox to\textboxwidth{#1}}
+
+% obrazku vlozene nad sebe na levou stranu
+\def\vertimagesleft#1#2{
+% odecist sirku obrazkoveho boxu od sirky textoveho boxu
+\global\advance\textboxwidth by-#2
+\global\advance\textboxwidth by-0.1in
+% vytvorit obrazkovy box
+\global\setbox\imgboxleft=\vbox{\hsize=#2{#1}}}
+
+% obrazky vlozene nad sebe na pravou stranu
+\def\vertimagesright#1#2{
+% odecist sirku obrazkoveho boxu od sirky textoveho boxu
+\global\advance\textboxwidth by-#2
+\global\advance\textboxwidth by-0.03in
+% vytvorit obrazkovy box
+\global\setbox\imgboxright=\vbox{\hsize=#2{#1}}}
+
+% vertikalni obrazkove boxy musi byt definovany jako prvni na celem
+% slajdu (aby bylo mozno podle nich upravit sirku textoveho boxu)
+% a po jejich skonceni musi byt vlozeno makro \vertimagesend
+\def\vertimagesend{
+% existujici textovy box bude ukoncen a bude zalozen novy uz se spravnou sirkou
+\egroup
+\setbox\tmpbox=\vbox\bgroup\hsize=\textboxwidth
+}
+
+% slozit textovy box
+\def\producetextbox{\setbox\textbox=\vbox to\maxboxsize{\hsize=\textboxwidth\unvbox\tmpbox
+\vfil}}
+
+% konec slajdu
+\def\endslide{
+% ukonceni docasneho vboxu \tmpbox
+\egroup
+\ifdim\ht\tmpbox=0.0pt\setbox\tmpbox=\vbox{\hsize=\textboxwidth\vskip8pt
+~}\fi
+% zjistit vysku nejvyssiho z \imgboxleft, \imgboxright a \tmpbox
+\maxboxsize=\ht\tmpbox
+\ifvoid\imgboxleft\relax\else\ifdim\ht\imgboxleft>\maxboxsize\maxboxsize=\ht\imgboxleft\fi\fi
+\ifvoid\imgboxright\relax\else\ifdim\ht\imgboxright>\maxboxsize\maxboxsize=\ht\imgboxright\fi\fi
+\advance\maxboxsize by0.04in
+% vytvorit vbox s textem (prelit \tmpbox do \textbox)
+\producetextbox
+% vysazet vboxy vedle sebe
+\hbox{\hskip0.15in
+\ifvoid\imgboxleft\relax\else\hskip-0.1in\vbox to\maxboxsize{\hsize=\wd\imgboxleft\unvbox\imgboxleft\vfil}\hskip0.2in\fi
+\box\textbox
+\ifvoid\imgboxright\relax\else\hskip0.03in\vbox to\maxboxsize{\hsize=\wd\imgboxright\unvbox\imgboxright\vfil}\fi}
+% konec stranky
+% paticka s nazvem prezentace a cislem strany
+\tmpheight=2.94in\advance\tmpheight by-\maxboxsize
+\vskip\tmpheight\hbox to4.9in{\hfil\special{color rgb \pagenocolor}\headerfont\Title\hfil\folio}
+\vfill
+\penalty-10000
+\egroup
+}
+
+

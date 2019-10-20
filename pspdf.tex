@@ -1,0 +1,79 @@
+% postscript/pdf
+
+\newcount\marknumber	\marknumber=1
+\newcount\countdp \newcount\countwd \newcount\countht 
+
+%
+% for ordinary tex
+%
+\ifx\pdfoutput\undefined
+\def\rgboo#1{\special{color rgb #1}}
+\input epsf
+\def\fig#1{\epsfbox{#1.eps}}
+\def\figscale#1#2{\epsfxsize=#2\epsfbox{#1.eps}}
+\def\postscript#1{\special{" #1}}		% for dvips
+\postscript{
+	/bd {bind def} bind def
+	/fsd {findfont exch scalefont def} bd
+	/sms {setfont moveto show} bd
+	/ms {moveto show} bd
+	/pdfmark where		% printers ignore pdfmarks
+	{pop} {userdict /pdfmark /cleartomark load put} ifelse
+	[ /PageMode /UseOutlines		% bookmark window open
+	/DOCVIEW pdfmark}
+\def\bookmark#1#2{\postscript{		% #1=subheadings (if not 0)
+	[ /Dest /MyDest\the\marknumber /View [ /XYZ null null null ] /DEST pdfmark
+	[ /Title (#2) /Count #1 /Dest /MyDest\the\marknumber /OUT pdfmark}%
+	\advance\marknumber by1}
+\def\pdfklink#1#2{%
+	\hskip-.25em\setbox0=\hbox{#1}%
+		\countdp=\dp0 \countwd=\wd0 \countht=\ht0%
+		\divide\countdp by65536 \divide\countwd by65536%
+			\divide\countht by65536%
+		\advance\countdp by1 \advance\countwd by1%
+			\advance\countht by1%
+		\def\linkdp{\the\countdp} \def\linkwd{\the\countwd}%
+			\def\linkht{\the\countht}%
+	\postscript{
+		[ /Rect [ -1.5 -\linkdp.0 0\linkwd.0 0\linkht.5 ] 
+		/Border [ 0 0 0 ]
+		/Action << /Subtype /URI /URI (#2) >>
+		/Subtype /Link
+		/ANN pdfmark}{\rgb{1 0 0}{#1}}}
+
+\def\pdfrect#1#2#3#4#5{
+	\postscript{
+		#1 setrgbcolor
+		#2 #3 moveto
+		#4 #3 lineto
+		#4 #5 lineto
+		#2 #5 lineto
+		#2 #3 lineto
+		closepath
+		fill
+		0 0 0 setrgbcolor
+	}
+}
+%
+% for pdftex
+%
+\else
+\def\rgboo#1{\pdfliteral{#1 rg #1 RG}}
+\def\fig#1{\pdfximage {#1.pdf}\pdfrefximage\pdflastximage}
+\def\figscale#1#2{\pdfximage width#2 {#1.pdf}\pdfrefximage\pdflastximage}
+\pdfcatalog{/PageMode /UseOutlines}		% bookmark window open
+\def\bookmark#1#2{
+	\pdfdest num \marknumber xyz
+	\pdfoutline goto num \marknumber count #1 {#2}
+	\advance\marknumber by1}
+\def\pdfklink#1#2{%
+	\noindent\pdfstartlink user
+		{/Subtype /Link
+		/Border [ 0 0 0 ]
+		/A << /S /URI /URI (#2) >>}{\rgb{1 0 0}{#1}}%
+	\pdfendlink}
+\fi
+
+\def\rgbo#1#2{\rgboo{#1}#2\rgboo{0 0 0}}
+\def\rgb#1#2{\mark{#1}\rgbo{#1}{#2}\mark{0 0 0}}
+\def\pdflink#1{\pdfklink{#1}{#1}}
